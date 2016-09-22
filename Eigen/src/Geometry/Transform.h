@@ -610,7 +610,7 @@ public:
     * then this function smartly returns a const reference to \c *this.
     */
   template<typename NewScalarType>
-  inline typename internal::cast_return_type<Transform,Transform<NewScalarType,Dim,Mode,Options> >::type cast() const
+  EIGEN_DEVICE_FUNC inline typename internal::cast_return_type<Transform,Transform<NewScalarType,Dim,Mode,Options> >::type cast() const
   { return typename internal::cast_return_type<Transform,Transform<NewScalarType,Dim,Mode,Options> >::type(*this); }
 
   /** Copy constructor with scalar type conversion */

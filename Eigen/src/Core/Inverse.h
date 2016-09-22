@@ -50,7 +50,7 @@ public:
   typedef typename internal::ref_selector<Inverse>::type Nested;
   typedef typename internal::remove_all<XprType>::type NestedExpression;
   
-  explicit Inverse(const XprType &xpr)
+  EIGEN_DEVICE_FUNC explicit Inverse(const XprType &xpr)
     : m_xpr(xpr)
   {}
 

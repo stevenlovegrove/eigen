@@ -65,6 +65,7 @@ template<typename Derived> class TriangularBase : public EigenBase<Derived>
     inline Index innerStride() const { return derived().innerStride(); }
     
     // dummy resize function
+    EIGEN_DEVICE_FUNC
     void resize(Index rows, Index cols)
     {
       EIGEN_UNUSED_VARIABLE(rows);
@@ -549,6 +550,7 @@ template<typename _MatrixType, unsigned int _Mode> class TriangularViewImpl<_Mat
 // FIXME should we keep that possibility
 template<typename MatrixType, unsigned int Mode>
 template<typename OtherDerived>
+EIGEN_DEVICE_FUNC
 inline TriangularView<MatrixType, Mode>&
 TriangularViewImpl<MatrixType, Mode, Dense>::operator=(const MatrixBase<OtherDerived>& other)
 {
@@ -559,6 +561,7 @@ TriangularViewImpl<MatrixType, Mode, Dense>::operator=(const MatrixBase<OtherDer
 // FIXME should we keep that possibility
 template<typename MatrixType, unsigned int Mode>
 template<typename OtherDerived>
+EIGEN_DEVICE_FUNC
 void TriangularViewImpl<MatrixType, Mode, Dense>::lazyAssign(const MatrixBase<OtherDerived>& other)
 {
   internal::call_assignment_no_alias(derived(), other.template triangularView<Mode>());
@@ -578,6 +581,7 @@ TriangularViewImpl<MatrixType, Mode, Dense>::operator=(const TriangularBase<Othe
 
 template<typename MatrixType, unsigned int Mode>
 template<typename OtherDerived>
+EIGEN_DEVICE_FUNC
 void TriangularViewImpl<MatrixType, Mode, Dense>::lazyAssign(const TriangularBase<OtherDerived>& other)
 {
   eigen_assert(Mode == int(OtherDerived::Mode));
@@ -711,6 +715,7 @@ struct unary_evaluator<TriangularView<MatrixType,Mode>, IndexBased>
 {
   typedef TriangularView<MatrixType,Mode> XprType;
   typedef evaluator<typename internal::remove_all<MatrixType>::type> Base;
+  EIGEN_DEVICE_FUNC
   unary_evaluator(const XprType &xpr) : Base(xpr.nestedExpression()) {}
 };
 
@@ -936,6 +941,7 @@ template< typename DstXprType, typename Lhs, typename Rhs, typename Scalar>
 struct Assignment<DstXprType, Product<Lhs,Rhs,DefaultProduct>, internal::assign_op<Scalar>, Dense2Triangular, Scalar>
 {
   typedef Product<Lhs,Rhs,DefaultProduct> SrcXprType;
+  EIGEN_DEVICE_FUNC
   static void run(DstXprType &dst, const SrcXprType &src, const internal::assign_op<Scalar> &)
   {
     dst.setZero();
@@ -948,6 +954,7 @@ template< typename DstXprType, typename Lhs, typename Rhs, typename Scalar>
 struct Assignment<DstXprType, Product<Lhs,Rhs,DefaultProduct>, internal::add_assign_op<Scalar>, Dense2Triangular, Scalar>
 {
   typedef Product<Lhs,Rhs,DefaultProduct> SrcXprType;
+  EIGEN_DEVICE_FUNC
   static void run(DstXprType &dst, const SrcXprType &src, const internal::add_assign_op<Scalar> &)
   {
     dst._assignProduct(src, 1);
@@ -959,6 +966,7 @@ template< typename DstXprType, typename Lhs, typename Rhs, typename Scalar>
 struct Assignment<DstXprType, Product<Lhs,Rhs,DefaultProduct>, internal::sub_assign_op<Scalar>, Dense2Triangular, Scalar>
 {
   typedef Product<Lhs,Rhs,DefaultProduct> SrcXprType;
+  EIGEN_DEVICE_FUNC
   static void run(DstXprType &dst, const SrcXprType &src, const internal::sub_assign_op<Scalar> &)
   {
     dst._assignProduct(src, -1);

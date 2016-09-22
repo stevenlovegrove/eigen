@@ -290,6 +290,7 @@ template<typename DstXprType, typename XprType, typename Scalar>
 struct Assignment<DstXprType, Inverse<XprType>, internal::assign_op<Scalar>, Dense2Dense, Scalar>
 {
   typedef Inverse<XprType> SrcXprType;
+  EIGEN_DEVICE_FUNC
   static void run(DstXprType &dst, const SrcXprType &src, const internal::assign_op<Scalar> &)
   {
     // FIXME shall we resize dst here?

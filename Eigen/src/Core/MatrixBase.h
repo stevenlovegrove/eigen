@@ -167,11 +167,10 @@ template<typename Derived> class MatrixBase
     operator*(const MatrixBase<OtherDerived> &other) const
     { return this->lazyProduct(other); }
 #else
-
     template<typename OtherDerived>
+    EIGEN_DEVICE_FUNC
     const Product<Derived,OtherDerived>
     operator*(const MatrixBase<OtherDerived> &other) const;
-
 #endif
 
     template<typename OtherDerived>
@@ -180,12 +179,14 @@ template<typename Derived> class MatrixBase
     lazyProduct(const MatrixBase<OtherDerived> &other) const;
 
     template<typename OtherDerived>
-    Derived& operator*=(const EigenBase<OtherDerived>& other);
+    EIGEN_DEVICE_FUNC Derived& operator*=(const EigenBase<OtherDerived>& other);
 
     template<typename OtherDerived>
+    EIGEN_DEVICE_FUNC
     void applyOnTheLeft(const EigenBase<OtherDerived>& other);
 
     template<typename OtherDerived>
+    EIGEN_DEVICE_FUNC
     void applyOnTheRight(const EigenBase<OtherDerived>& other);
 
     template<typename DiagonalDerived>
@@ -405,7 +406,7 @@ template<typename Derived> class MatrixBase
 
     inline Matrix<Scalar,3,1> eulerAngles(Index a0, Index a1, Index a2) const;
 
-    inline ScalarMultipleReturnType operator*(const UniformScaling<Scalar>& s) const;
+    EIGEN_DEVICE_FUNC inline ScalarMultipleReturnType operator*(const UniformScaling<Scalar>& s) const;
     // put this as separate enum value to work around possible GCC 4.3 bug (?)
     enum { HomogeneousReturnTypeDirection = ColsAtCompileTime==1&&RowsAtCompileTime==1 ? ((internal::traits<Derived>::Flags&RowMajorBit)==RowMajorBit ? Horizontal : Vertical)
                                           : ColsAtCompileTime==1 ? Vertical : Horizontal };
@@ -483,7 +484,6 @@ template<typename Derived> class MatrixBase
     template<typename OtherDerived> Derived& operator-=(const ArrayBase<OtherDerived>& )
     {EIGEN_STATIC_ASSERT(std::ptrdiff_t(sizeof(typename OtherDerived::Scalar))==-1,YOU_CANNOT_MIX_ARRAYS_AND_MATRICES); return *this;}
 };
-
 
 /***************************************************************************
 * Implementation of matrix base methods
